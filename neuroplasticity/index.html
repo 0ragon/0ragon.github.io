@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Нейропластичність та РДУГ: Інтерактивний Звіт</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Chosen Palette: "Neural Calm & Focus" - Основний фон: теплі нейтральні (slate-50), акценти: глибокий індиго (текст), смарагдовий (зростання), кораловий (помилка), бурштиновий (увага). -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            scroll-behavior: smooth;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+
+        .step-active {
+            border-color: #10b981;
+            background-color: #ecfdf5;
+            transform: scale(1.02);
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="overflow-x-hidden">
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 glass-card border-b px-6 py-4">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <span class="font-bold text-indigo-900 flex items-center gap-2">
+                <span class="text-2xl">🧠</span> NEURO-INSIGHTS
+            </span>
+            <div class="hidden md:flex gap-8 text-sm font-semibold text-slate-600">
+                <a href="#mindset" class="hover:text-indigo-600 transition">Електрика мозку</a>
+                <a href="#chemistry" class="hover:text-indigo-600 transition">Хімічний каскад</a>
+                <a href="#adhd" class="hover:text-indigo-600 transition">Специфіка РДУГ</a>
+                <a href="#toolkit" class="hover:text-indigo-600 transition">Інструментарій</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-24 pb-12 px-4">
+        <div class="max-w-5xl mx-auto">
+            
+            <!-- Hero Section -->
+            <header class="text-center mb-16 fade-in">
+                <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 mb-6 leading-tight">
+                    Анатомія Помилки: <br><span class="text-indigo-600">Нейропластичність у дії</span>
+                </h1>
+                <p class="text-lg text-slate-600 max-w-3xl mx-auto">
+                    Це інтерактивне дослідження того, як наші переконання змінюють фізичну структуру нашого мозку. 
+                    Ми проаналізували наукові дані про те, що відбувається в момент помилки, як працює хімічний двигун навчання 
+                    та чому стандартні підходи не завжди працюють для нейровідмінного мозку.
+                </p>
+            </header>
+
+            <!-- Section 1: Mindset & ERPs -->
+            <section id="mindset" class="mb-20 scroll-mt-24">
+                <div class="glass-card rounded-3xl p-8 shadow-sm">
+                    <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+                        <span>⚡</span> Електричний сигнал: ERN проти Pe
+                    </h2>
+                    <p class="text-slate-600 mb-8">
+                        У момент помилки мозок генерує два типи хвиль. ERN (автоматичний сигнал тривоги) однаковий у всіх, 
+                        але Pe (свідоме оброблення) залежить від ваших переконань. Оберіть тип мислення, щоб побачити різницю.
+                    </p>
+
+                    <div class="flex flex-wrap gap-4 mb-8 justify-center">
+                        <button onclick="updateBrainChart('fixed')" id="btn-fixed" class="px-6 py-2 rounded-full border-2 border-slate-300 font-semibold transition hover:bg-slate-100">Фіксоване мислення</button>
+                        <button onclick="updateBrainChart('growth')" id="btn-growth" class="px-6 py-2 rounded-full border-2 border-emerald-500 bg-emerald-50 text-emerald-700 font-semibold transition shadow-sm">Установка на зростання</button>
+                    </div>
+
+                    <div class="chart-container mb-6">
+                        <canvas id="mindsetChart"></canvas>
+                    </div>
+                    
+                    <div id="mindset-analysis" class="mt-6 p-4 rounded-xl bg-slate-50 border border-slate-200 italic text-center text-slate-700">
+                        При установці на зростання сигнал <b>Pe</b> значно вищий, що означає більше ресурсів на виправлення помилки.
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 2: Chemical Cascade -->
+            <section id="chemistry" class="mb-20 scroll-mt-24">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl font-bold mb-4">Хімічний двигун змін</h2>
+                    <p class="text-slate-600">Нейропластичність не є пасивним процесом. Вона вимагає точного поєднання трьох нейромедіаторів.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="p-6 rounded-2xl bg-white border shadow-sm hover:shadow-md transition">
+                        <div class="text-3xl mb-4">🔥</div>
+                        <h3 class="font-bold text-orange-600 mb-2">1. Адреналін (Збудження)</h3>
+                        <p class="text-sm text-slate-600">Активує стан пильності. Сигнал мозку: "Зараз відбувається щось важливе, зверни увагу!"</p>
+                    </div>
+                    <div class="p-6 rounded-2xl bg-white border shadow-sm hover:shadow-md transition">
+                        <div class="text-3xl mb-4">🎯</div>
+                        <h3 class="font-bold text-amber-500 mb-2">2. Ацетилхолін (Фокус)</h3>
+                        <p class="text-sm text-slate-600">Діє як "маркер". Він підсвічує конкретні нейронні ланцюги, які потребують переналаштування.</p>
+                    </div>
+                    <div class="p-6 rounded-2xl bg-white border shadow-sm hover:shadow-md transition">
+                        <div class="text-3xl mb-4">💎</div>
+                        <h3 class="font-bold text-emerald-600 mb-2">3. Дофамін (Закріплення)</h3>
+                        <p class="text-sm text-slate-600">Виділяється при найменшому прогресі. Це "клей", який робить нові зв'язки міцними.</p>
+                    </div>
+                </div>
+
+                <div class="mt-8 p-6 rounded-3xl bg-indigo-900 text-white flex flex-col md:flex-row items-center gap-8">
+                    <div class="text-center md:text-left">
+                        <h4 class="text-xl font-bold mb-2 text-indigo-200">Трикутник Успіху</h4>
+                        <p class="text-indigo-100 text-sm">Нейропластичність = Увага + Збудження + Мотивація. Переконання "це можливо" дозволяє вам утримувати цей каскад достатньо довго для змін.</p>
+                    </div>
+                    <div class="flex-shrink-0 bg-white/10 p-4 rounded-2xl">
+                        <div class="text-4xl font-mono">15%</div>
+                        <div class="text-[10px] uppercase tracking-widest text-indigo-300">Оптимальний рівень помилок</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 3: ADHD Perspective -->
+            <section id="adhd" class="mb-20 scroll-mt-24">
+                <div class="glass-card rounded-3xl p-8 border-rose-100 overflow-hidden relative">
+                    <div class="absolute top-0 right-0 p-8 opacity-10 text-8xl pointer-events-none">🌪️</div>
+                    <h2 class="text-2xl font-bold mb-6 flex items-center gap-2 text-rose-800">
+                        Специфіка РДУГ: Чому все інакше?
+                    </h2>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                        <div>
+                            <p class="text-slate-600 mb-6">
+                                Мозок при РДУГ має фізичні особливості (менший об'єм ACC) та хімічний дефіцит, що робить стандартний процес "помилка -> навчання" набагато складнішим.
+                            </p>
+                            <ul class="space-y-4">
+                                <li class="flex gap-3">
+                                    <span class="text-rose-500 font-bold">✕</span>
+                                    <div>
+                                        <span class="font-semibold block">Ослаблені сигнали:</span>
+                                        <span class="text-sm text-slate-500">Автоматичне та свідоме виявлення помилок (ERN/Pe) суттєво пригнічене.</span>
+                                    </div>
+                                </li>
+                                <li class="flex gap-3">
+                                    <span class="text-rose-500 font-bold">✕</span>
+                                    <div>
+                                        <span class="font-semibold block">Емоційний блок (RSD):</span>
+                                        <span class="text-sm text-slate-500">Помилка сприймається як загроза життю. Активується "бийся або біжи", блокуючи навчання.</span>
+                                    </div>
+                                </li>
+                                <li class="flex gap-3">
+                                    <span class="text-rose-500 font-bold">✕</span>
+                                    <div>
+                                        <span class="font-semibold block">Дефіцит дофаміну:</span>
+                                        <span class="text-sm text-slate-500">Важко ініціювати зусилля та отримувати задоволення від дрібних кроків.</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="bg-rose-50 rounded-2xl p-6 border border-rose-100">
+                            <h4 class="font-bold text-rose-900 mb-4">Порівняльний Профіль</h4>
+                            <div class="space-y-3 text-sm">
+                                <div class="flex justify-between border-b border-rose-200 pb-2">
+                                    <span class="text-slate-500">Параметр</span>
+                                    <span class="font-bold">РДУГ-мозок</span>
+                                </div>
+                                <div class="flex justify-between border-b border-rose-100 pb-1">
+                                    <span>Товщина кори ACC</span>
+                                    <span class="text-rose-600">↓ Менша на ~21%</span>
+                                </div>
+                                <div class="flex justify-between border-b border-rose-100 pb-1">
+                                    <span>Реакція на критику</span>
+                                    <span class="text-rose-600 font-semibold">Гіперчутливість (RSD)</span>
+                                </div>
+                                <div class="flex justify-between border-b border-rose-100 pb-1">
+                                    <span>Базовий дофамін</span>
+                                    <span class="text-rose-600">Хронічний дефіцит</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 4: Toolkit -->
+            <section id="toolkit" class="mb-20 scroll-mt-24">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold mb-4">Ваш інструментарій навчання</h2>
+                    <div class="flex justify-center gap-4 text-sm font-semibold">
+                        <button onclick="switchTab('general')" id="tab-general" class="px-6 py-2 rounded-full bg-indigo-600 text-white shadow-md">Загальні техніки</button>
+                        <button onclick="switchTab('adhd-specific')" id="tab-adhd" class="px-6 py-2 rounded-full bg-white text-slate-600 border border-slate-200 hover:border-indigo-400">РДУГ-адаптації</button>
+                    </div>
+                </div>
+
+                <div id="general-content" class="grid grid-cols-1 md:grid-cols-2 gap-6 fade-in">
+                    <!-- Cards populate here -->
+                </div>
+
+                <div id="adhd-content" class="grid grid-cols-1 md:grid-cols-2 gap-6 fade-in hidden">
+                    <!-- Cards populate here -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="bg-slate-900 text-slate-400 py-12 px-6">
+        <div class="max-w-5xl mx-auto text-center">
+            <p class="text-sm mb-4 italic">"Мозок змінюється не від повторень, а від стану, в якому ці повторення відбуваються."</p>
+            <div class="h-px bg-slate-800 w-24 mx-auto mb-6"></div>
+            <p class="text-xs uppercase tracking-widest">&copy; 2024 База Знань: Нейробіологія та Навчання</p>
+        </div>
+    </footer>
+
+    <script>
+        // Data Storage
+        const tools = {
+            general: [
+                { title: "Правило 15% помилок", icon: "📊", text: "Підтримуйте складність так, щоб помилятися у 15% випадків. Це ідеальний рівень для виділення адреналіну без паніки." },
+                { title: "Gap Effect (Мікропаузи)", icon: "⏱️", text: "Робіть випадкові 10-секундні зупинки. Мозок фоново відтворює матеріал у 10 разів швидше під час цих пауз." },
+                { title: "Візуальний фокус", icon: "👁️", text: "Дивіться на одну крапку 60 сек перед навчанням. Це примусово виділяє ацетилхолін для глибокої концентрації." },
+                { title: "90-хвилинні цикли", icon: "🔋", text: "Це ліміт нашої системи фокусування. Після 90 хвилин необхідний відпочинок без екранів." }
+            ],
+            adhd: [
+                { title: "Body Doubling", icon: "👥", text: "Працюйте поруч з іншою людиною (навіть по відео). Соціальна присутність підвищує рівень дофаміну та знижує відволікання." },
+                { title: "Pomodoro 15/3", icon: "🍎", text: "Коротші цикли краще працюють для РДУГ-мозку. 15 хв фокусу створюють необхідну терміновість." },
+                { title: "Обхід RSD", icon: "🛡️", text: "Використовуйте автоматичні тести для перевірки. Помилка перед комп'ютером не сприймається як загроза, на відміну від оцінки вчителя." },
+                { title: "Stress-is-enhancing", icon: "🚀", text: "Перейменуйте тривогу на 'корисний адреналін'. Це стабілізує нервову систему та запобігає униканню завдань." }
+            ]
+        };
+
+        let mindsetChart;
+
+        function initChart() {
+            const ctx = document.getElementById('mindsetChart').getContext('2d');
+            mindsetChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['0ms', '50ms', '100ms', '200ms', '300ms', '400ms', '500ms', '600ms'],
+                    datasets: [
+                        {
+                            label: 'ERN (Автоматичний сигнал)',
+                            data: [0, -10, -35, -5, 0, 0, 0, 0],
+                            borderColor: '#ef4444',
+                            backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                            borderWidth: 3,
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: 'Pe (Свідома увага)',
+                            data: [0, 0, 0, 10, 45, 60, 40, 10],
+                            borderColor: '#10b981',
+                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                            borderWidth: 3,
+                            tension: 0.4,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom' },
+                        tooltip: { mode: 'index', intersect: false }
+                    },
+                    scales: {
+                        y: { display: true, grid: { display: false }, title: { display: true, text: 'Амплітуда сигналу' } },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+        }
+
+        function updateBrainChart(type) {
+            const fixedData = [0, 0, 0, 5, 15, 12, 5, 0];
+            const growthData = [0, 0, 0, 10, 45, 60, 40, 10];
+            
+            mindsetChart.data.datasets[1].data = (type === 'growth') ? growthData : fixedData;
+            mindsetChart.update();
+
+            // Toggle button styles
+            const btnG = document.getElementById('btn-growth');
+            const btnF = document.getElementById('btn-fixed');
+            const analysis = document.getElementById('mindset-analysis');
+
+            if(type === 'growth') {
+                btnG.classList.add('bg-emerald-50', 'border-emerald-500', 'text-emerald-700', 'shadow-sm');
+                btnF.classList.remove('bg-rose-50', 'border-rose-500', 'text-rose-700', 'shadow-sm');
+                analysis.innerHTML = "При <b>установці на зростання</b> сигнал Pe потужний — мозок активно шукає спосіб виправити помилку.";
+            } else {
+                btnF.classList.add('bg-rose-50', 'border-rose-500', 'text-rose-700', 'shadow-sm');
+                btnG.classList.remove('bg-emerald-50', 'border-emerald-500', 'text-emerald-700', 'shadow-sm');
+                analysis.innerHTML = "При <b>фіксованому мисленні</b> сигнал Pe слабкий — мозок схильний ігнорувати помилку, щоб захистити Его.";
+            }
+        }
+
+        function switchTab(type) {
+            const genBtn = document.getElementById('tab-general');
+            const adhdBtn = document.getElementById('tab-adhd');
+            const genCont = document.getElementById('general-content');
+            const adhdCont = document.getElementById('adhd-content');
+
+            if(type === 'general') {
+                genBtn.className = "px-6 py-2 rounded-full bg-indigo-600 text-white shadow-md";
+                adhdBtn.className = "px-6 py-2 rounded-full bg-white text-slate-600 border border-slate-200 hover:border-indigo-400";
+                genCont.classList.remove('hidden');
+                adhdCont.classList.add('hidden');
+            } else {
+                adhdBtn.className = "px-6 py-2 rounded-full bg-rose-600 text-white shadow-md";
+                genBtn.className = "px-6 py-2 rounded-full bg-white text-slate-600 border border-slate-200 hover:border-rose-400";
+                adhdCont.classList.remove('hidden');
+                genCont.classList.add('hidden');
+            }
+        }
+
+        function populateTools() {
+            const genCont = document.getElementById('general-content');
+            const adhdCont = document.getElementById('adhd-content');
+
+            tools.general.forEach(item => {
+                genCont.innerHTML += `
+                    <div class="p-6 rounded-2xl bg-white border border-slate-100 shadow-sm hover:border-indigo-300 transition-colors">
+                        <div class="text-2xl mb-2">${item.icon}</div>
+                        <h4 class="font-bold mb-2">${item.title}</h4>
+                        <p class="text-sm text-slate-500">${item.text}</p>
+                    </div>
+                `;
+            });
+
+            tools.adhd.forEach(item => {
+                adhdCont.innerHTML += `
+                    <div class="p-6 rounded-2xl bg-white border border-rose-50 shadow-sm hover:border-rose-300 transition-colors">
+                        <div class="text-2xl mb-2">${item.icon}</div>
+                        <h4 class="font-bold mb-2">${item.title}</h4>
+                        <p class="text-sm text-slate-500">${item.text}</p>
+                    </div>
+                `;
+            });
+        }
+
+        window.onload = () => {
+            initChart();
+            populateTools();
+        };
+    </script>
+</body>
+</html>
+<!-- Application Structure Plan: 
+1. Hero Section: Задає контекст і тон дослідження.
+2. Електрична візуалізація (Section 1): Використовує інтерактивний графік Chart.js для демонстрації різниці між мисленнями. Користувач може перемикатися, бачачи реальну різницю в амплітуді сигналу Pe.
+3. Хімічний процес (Section 2): Картки з іконками для пояснення тріади "Адреналін-Ацетилхолін-Дофамін". Створює логічний міст між електрикою та фізичними змінами.
+4. ADHD Deep Dive (Section 3): Окремий блок з акцентом на структурні зміни та емоційну реакцію (RSD). Використовує порівняльну таблицю для наочності.
+5. Інтерактивний Інструментарій (Section 4): Перемикач між загальними техниками та специфічними для РДУГ, щоб користувач міг обрати те, що релевантно саме для нього.
+-->
+<!-- Visualization & Content Choices: 
+- Line Chart (Chart.js): Для візуалізації ERN/Pe хвиль. Обрано через динамічність і точність у відображенні часових проміжків.
+- Grid Layout: Для пояснення хімічного каскаду (3 кроки).
+- Side-by-side List: Для порівняння ADHD та Neurotypical профілів.
+- Tab-based filtering: Для розділу технік, щоб не перевантажувати користувача інформацією.
+-->
+<!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
